@@ -1,12 +1,22 @@
+import { useContext } from 'react';
 import Link from 'next/link';
+import { TimerContext } from './_app';
 
 const Home = () => {
+  const { startTimer } = useContext(TimerContext);
+
+  const handleStartTimer = () => {
+    startTimer();
+  };
+
   return (
     <div>
-      <h1>Welcome to the Vim Navigation Game!</h1>
-      <Link href="/center">
-        Start Game
-      </Link>
+      <h1>ホームページ</h1>
+      <button onClick={handleStartTimer}>
+        <Link href="/center">
+          Game Start
+        </Link>
+      </button>
     </div>
   );
 };
