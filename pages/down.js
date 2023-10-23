@@ -1,7 +1,11 @@
 import { useRouter } from 'next/router';
+import { useRecoilState } from 'recoil';
+import { timerState } from './timerState';
+import { useEffect } from 'react';
 
 const DownPage = () => {
   const router = useRouter();
+  const [timer, setTimer] = useRecoilState(timerState);
 
   const handleKeyNavigation = (event) => {
     const key = event.key.toLowerCase();
@@ -20,9 +24,27 @@ const DownPage = () => {
     window.addEventListener('keydown', handleKeyNavigation);
   }
 
+  useEffect(() => {
+
+    if (!timer.isRunning) {
+      return;
+    }
+
+    const interval = setInterval(() => {
+      setTimer(prev => ({
+        ...prev,
+        time: prev.time + 1
+      }));
+    }, 1000);
+
+    return () => clearInterval(interval);
+
+  }, [timer.isRunning]);
+
   return (
     <div>
       <h2>下ページ</h2>
+      <p>経過時間: {timer.time}</p>
       <p>k: 中央ページへ</p>
     </div>
   );
